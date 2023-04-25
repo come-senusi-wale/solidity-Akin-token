@@ -99,11 +99,4 @@ contract SelToken {
 
 
 
-
-    // dayo token addresss  0xfDEE065515D69f50BdB4b9A8094cF4dD901f7776 ::::::::::::::::::::::
-
-    // ayo token address 0xDBae9721A0E0C0f5A984BD41522AAdd328E369fB  :::::::::::::
-
-    // nft token address   https://testnets.opensea.io/assets/0x13a250ceb4c84a6f8d66f935dbf8ea330d2313e8/0 ::::::::::::::::::
-
 }

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin</title>
+    <style>
+        
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+
+        #container{
+            width: 60%;
+            
+            padding: 20px;
+            background-color: antiquewhite;
+        }
+
+        header{
+            text-align: center;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .container_one{
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .buy_token input{
+            padding: 10px;
+            border: none;
+            background-color: #fff;
+            border-radius: 10px;
+        }
+
+        .buy_token input:focus{
+            outline: none;
+        }
+
+        .buy_token button {
+            text-transform: capitalize;
+            padding: 5px 10px;
+            margin-left: 10px;
+            background-color: bisque;
+            border: none;
+            color: #444;
+            border-radius: 10px;
+        }
+
+        .buy_token button:hover{
+            background-color: thistle;
+            color: #fff;
+        }
+
+        .container_one .your_token{
+            display: flex;
+        }
+
+        .container_one .your_token p{
+            color: #444;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"> 
+
+        <header>
+            <h2>akin token wallet</h2>
+        </header>
+
+        <div class="container_one">
+
+            <div class="buy_token">
+                <input type="number" name="" id="ether" placeholder="enter eth amount in wei">
+                <button type="button" id="buy">Recieve eth</button>
+            </div>
+
+            <div class="your_token">
+                <p>Total Eth</p>
+                <p><span id="token_have">400</span>AKIN</p>
+            </div>
+
+        </div>
+
+
+        <div class="container_one">
+
+           
+
+            <div class="your_token">
+                <p>Token Price</p>
+                <p><span id="token_price">0.3</span>Ethereum(wei)</p>
+            </div>
+
+            <div class="your_token">
+                <p>Avialable Token</p>
+                <p><span id="avialable_token">20000000</span>AKIN(wei)</p>
+            </div>
+
+            <div class="your_token">
+                <a href="../index.html" style="text-decoration: none; color: #444; text-transform: capitalize;">sale wallet</a>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+
+        window.addEventListener('DOMContentLoaded',  async(event) => {
+
+            let contract;
+            let web3;
+
+            let selTokenAddress = '0xd8883A9322862E7FcD0f820Fde2A1c5Af00F313A';
+
+
+
+            let selTokenAbi = [
+                {
+                "inputs": [
+                    {
+                    "internalType": "address",
+                    "name": "_token",
+                    "type": "address"
+                    },
+                    {
+                    "internalType": "uint256",
+                    "name": "_price",
+                    "type": "uint256"
+                    }
+                ],
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+                },
+                {
+                "inputs": [],
+                "name": "buyToken",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function",
+                "payable": true
+                },
+                {
+                "inputs": [],
+                "name": "balanceOfEther",
+                "outputs": [
+                    {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function",
+                "constant": true
+                },
+                {
+                "inputs": [],
+                "name": "amountEtherGenerat",
+                "outputs": [
+                    {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function",
+                "constant": true
+                },
+                {
+                "inputs": [
+                    {
+                    "internalType": "address",
+                    "name": "_accc",
+                    "type": "address"
+                    }
+                ],
+                "name": "tokenBalance",
+                "outputs": [
+                    {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function",
+                "constant": true
+                },
+                {
+                "inputs": [],
+                "name": "tokenBalanceOFSmartContract",
+                "outputs": [
+                    {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function",
+                "constant": true
+                },
+                {
+                "inputs": [
+                    {
+                    "internalType": "uint256",
+                    "name": "_amount",
+                    "type": "uint256"
+                    },
+                    {
+                    "internalType": "address payable",
+                    "name": "_acc",
+                    "type": "address"
+                    }
+                ],
+                "name": "tranferEther",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+                },
+                {
+                "inputs": [],
+                "name": "amountetherPay",
+                "outputs": [
+                    {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function",
+                "constant": true
+                }
+            ];
+
+
+            let ethAmount = document.getElementById('ether');
+            let recieve = document.getElementById('buy');
+            let totalEth = document.getElementById('token_have');
+            
+            let avilableToken = document.getElementById('avialable_token');
+            
+
+            //web3 = new Web3(web3.currentProvider);
+            //web3 = new Web3(window.web3.currentProvider);
+
+
+
+
+
+
+
+            if (window.ethereum) {
+
+                web3 = new Web3(window.ethereum);
+                await ethereum.enable();
+
+            }else if(window.web3){
+
+                web3 = new Web3(window.web3.currentProvider);
+
+            }else{
+
+                alert('install matamask');
+            }
+
+
+
+            let accounts = await web3.eth.getAccounts();
+            
+
+            let account = accounts[0];
+
+            contract = new web3.eth.Contract(selTokenAbi, selTokenAddress);
+
+            /*let accounte = async () => {
+
+            let accounts = await web3.eth.getAccounts();
+
+            let account = accounts[0];
+            //return account;
+            console.log(account);
+            }*/
+
+            
+            // function to fetch avilable token in smart contract ::::::::::
+
+            let avialableToken = async() => {
+                //contract.methods.getnum().call()
+
+                let avialableTokenSmartCotract = await contract.methods.tokenBalanceOFSmartContract().call();
+
+                avilableToken.innerText = avialableTokenSmartCotract;
+                
+            }
+
+
+            // function to fetch total ETh fro contract
+
+
+            let totalEthFrom = async() =>{
+
+                try{
+
+                    let totatEthFromSmart = await contract.methods.amountEtherGenerat().call({from: account});
+                    totalEth.innerText = totatEthFromSmart;
+
+                }catch(err){
+
+                    console.log(err);
+                    console.log(err.message);
+                }
+            }
+
+
+            // function or event to recieve  eth from smart contract:::::::::::::::::
+
+            recieve.addEventListener('click', async() => {
+
+                let totatEthFromSmartContract = await contract.methods.amountEtherGenerat().call({from: account});
+
+                let ethAmountEnter = ethAmount.value;
+
+                if (ethAmountEnter == '') {
+
+                    alert('enter eth amount')
+                    
+                }else{
+
+                    if (ethAmountEnter > totatEthFromSmartContract) {
+                        
+                        alert('insufficient Eth');
+                    }else{
+
+                        let recieveEthFromContract = await contract.methods.tranferEther(6, account).send({from: account});
+                        alert('recieve');
+                    }
+
+                }
+
+
+            })
+
+
+            avialableToken();
+            totalEthFrom();
+
+
+        })
+
+    </script>
+</body>
+</html>
